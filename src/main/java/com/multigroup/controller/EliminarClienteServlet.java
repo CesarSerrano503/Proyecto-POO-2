@@ -1,11 +1,20 @@
+/*
+Created by IntelliJ IDEA.
+User: Cesar
+Date: 27/5/2025
+Time: 22:12
+To change this template use File | Settings | File Templates.
+*/
 package com.multigroup.controller;
 
 import com.multigroup.dao.ClienteDAO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 
 import java.io.IOException;
 

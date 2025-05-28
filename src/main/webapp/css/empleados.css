@@ -1,0 +1,65 @@
+/* contenedor principal */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    margin: 0; padding: 20px;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* botones */
+a.button, button.button {
+    display: inline-block;
+    background: #3498db;
+    color: #fff;
+    padding: 8px 16px;
+    margin-bottom: 10px;
+    border:none; border-radius:4px;
+    cursor:pointer; text-decoration:none;
+    transition: background 0.2s;
+}
+a.button:hover, button.button:hover {
+    background: #2980b9;
+}
+button.cancel {
+    background: #95a5a6;
+}
+button.cancel:hover {
+    background: #7f8c8d;
+}
+
+/* alertas */
+.alert {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #d6e9c6;
+    background-color: #dff0d8;
+    color: #3c763d;
+    border-radius:4px;
+}
+
+/* tabla */
+table {
+    width: 100%; border-collapse: collapse; margin-top:10px;
+}
+th, td {
+    padding:12px 8px; text-align:left; border-bottom:1px solid #ddd;
+}
+th {
+    background: #ecf0f1; color:#2c3e50;
+}
+tr:hover {
+    background: #f1f1f1;
+}
+td.actions a {
+    margin-right:8px; color:#3498db; text-decoration:none;
+}
+td.actions a:hover {
+    text-decoration:underline;
+}
