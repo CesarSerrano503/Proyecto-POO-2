@@ -1,77 +1,98 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Cesar
-  Date: 27/5/2025
-  Time: 22:12
-  To change this template use File | Settings | File Templates.
---%>
-
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Editar Cliente</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/cliente-form.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados-form.css"/>
 </head>
 <body>
-<h2>Editar Cliente</h2>
-<form action="${pageContext.request.contextPath}/clientes/editar" method="post">
-    <!-- ID (oculto) -->
-    <input type="hidden" name="id" value="${cliente.id}"/>
+<div class="container">
+    <h2>Editar Cliente</h2>
 
-    <label>Nombre:<br/>
-        <input type="text" name="nombre" required maxlength="255"
-               value="${cliente.nombre}"/>
-    </label><br/><br/>
+    <!-- Errores de validación -->
+    <c:if test="${not empty errors}">
+        <div class="alert">
+            <ul>
+                <c:forEach var="err" items="${errors}">
+                    <li>${err}</li>
+                </c:forEach>
+            </ul>
+        </div>
+    </c:if>
 
-    <label>Documento:<br/>
-        <input type="text" name="documento" required maxlength="50"
-               value="${cliente.documento}"/>
-    </label><br/><br/>
+    <form action="${pageContext.request.contextPath}/clientes" method="post" class="form">
+        <input type="hidden" name="idCliente" value="${cliente.idCliente}" />
 
-    <label>Tipo de Persona:<br/>
-        <select name="tipoPersona">
-            <option value="Natural" ${cliente.tipoPersona == 'Natural' ? 'selected' : ''}>
-                Natural
-            </option>
-            <option value="Jurídica" ${cliente.tipoPersona == 'Jurídica' ? 'selected' : ''}>
-                Jurídica
-            </option>
-        </select>
-    </label><br/><br/>
+        <!-- Nombre -->
+        <label>Nombre:
+            <input type="text" name="nombre"
+                   value="${cliente.nombre}"
+                   required maxlength="255"/>
+        </label>
 
-    <label>Teléfono:<br/>
-        <input type="text" name="telefono" maxlength="20"
-               value="${cliente.telefono}"/>
-    </label><br/><br/>
+        <!-- Documento -->
+        <label>Documento:
+            <input type="text" name="documento"
+                   value="${cliente.documento}"
+                   required maxlength="50"/>
+        </label>
 
-    <label>Correo:<br/>
-        <input type="email" name="correo" maxlength="255"
-               value="${cliente.correo}"/>
-    </label><br/><br/>
+        <!-- Tipo Persona -->
+        <label>Tipo Persona:
+            <select name="tipoPersona" required>
+                <option value="">--Selecciona--</option>
+                <option value="Natural" ${cliente.tipoPersona=='Natural'?'selected':''}>Natural</option>
+                <option value="Jurídica" ${cliente.tipoPersona=='Jurídica'?'selected':''}>Jurídica</option>
+            </select>
+        </label>
 
-    <label>Dirección:<br/>
-        <textarea name="direccion" rows="3" cols="30">${cliente.direccion}</textarea>
-    </label><br/><br/>
+        <!-- Teléfono -->
+        <label>Teléfono:
+            <input type="text" name="telefono"
+                   value="${cliente.telefono}"
+                   required maxlength="20"/>
+        </label>
 
-    <label>Estado:<br/>
-        <select name="estado">
-            <option value="Activo" ${cliente.estado == 'Activo' ? 'selected' : ''}>
-                Activo
-            </option>
-            <option value="Inactivo" ${cliente.estado == 'Inactivo' ? 'selected' : ''}>
-                Inactivo
-            </option>
-        </select>
-    </label><br/><br/>
+        <!-- Correo -->
+        <label>Correo:
+            <input type="email" name="correo"
+                   value="${cliente.correo}"
+                   required maxlength="150"/>
+        </label>
 
-    <button type="submit">Actualizar Cliente</button>
-</form>
-<p>
-    <a href="${pageContext.request.contextPath}/clientes" class="back-link">
-        ← Volver al listado
-    </a>
-</p>
+        <!-- Dirección -->
+        <label>Dirección:
+            <input type="text" name="direccion"
+                   value="${cliente.direccion}"
+                   required maxlength="255"/>
+        </label>
+
+        <!-- Estado -->
+        <label>Estado:
+            <select name="estado" required>
+                <option value="Activo"  ${cliente.estado=='Activo'?'selected':''}>Activo</option>
+                <option value="Inactivo"${cliente.estado=='Inactivo'?'selected':''}>Inactivo</option>
+            </select>
+        </label>
+
+        <!-- Creado Por -->
+        <label>Creado Por:
+            <input type="text" name="creadoPor"
+                   value="${cliente.creadoPor}"
+                   required maxlength="100"/>
+        </label>
+
+        <div class="form-actions">
+            <button type="submit" class="button">Actualizar</button>
+            <button type="button" class="button cancel"
+                    onclick="location.href='${pageContext.request.contextPath}/clientes?action=list';">
+                Cancelar
+            </button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

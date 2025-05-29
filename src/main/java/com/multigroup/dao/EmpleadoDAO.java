@@ -1,13 +1,13 @@
 package com.multigroup.dao;
 
 import com.multigroup.model.Empleado;
+
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
- * Data Access Object (DAO) para Empleado.
+ * DAO para Empleado, con CRUD completo, baja física y chequeo de duplicados.
  */
 public class EmpleadoDAO {
     private final Connection conn;
@@ -39,8 +39,10 @@ public class EmpleadoDAO {
     }
 
     public boolean insert(Empleado e) throws SQLException {
-        String sql = "INSERT INTO empleados(nombre, documento, tipo_persona, tipo_contratacion, telefono, " +
-                "correo, direccion, estado, creado_por, fecha_creacion) VALUES(?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)";
+        String sql = "INSERT INTO empleados(" +
+                "nombre, documento, tipo_persona, tipo_contratacion, telefono, " +
+                "correo, direccion, estado, creado_por, fecha_creacion" +
+                ") VALUES(?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)";
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, e.getNombre());
             stmt.setString(2, e.getDocumento());
@@ -60,13 +62,15 @@ public class EmpleadoDAO {
                 }
                 return true;
             }
+            return false;
         }
-        return false;
     }
 
     public boolean update(Empleado e) throws SQLException {
-        String sql = "UPDATE empleados SET nombre=?, documento=?, tipo_persona=?, tipo_contratacion=?, telefono=?, " +
-                "correo=?, direccion=?, estado=?, fecha_actualizacion=CURRENT_TIMESTAMP WHERE id_empleado=?";
+        String sql = "UPDATE empleados SET " +
+                "nombre=?, documento=?, tipo_persona=?, tipo_contratacion=?, telefono=?, " +
+                "correo=?, direccion=?, estado=?, fecha_actualizacion=CURRENT_TIMESTAMP " +
+                "WHERE id_empleado=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, e.getNombre());
             stmt.setString(2, e.getDocumento());
@@ -81,19 +85,46 @@ public class EmpleadoDAO {
         }
     }
 
+    /** Baja lógica: marca Inactivo */
     public boolean delete(int idEmpleado) throws SQLException {
-        String sql = "UPDATE empleados SET estado='Inactivo', fecha_inactivacion=CURRENT_TIMESTAMP WHERE id_empleado=?";
+        String sql = "UPDATE empleados SET " +
+                "estado='Inactivo', fecha_inactivacion=CURRENT_TIMESTAMP " +
+                "WHERE id_empleado=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idEmpleado);
             return stmt.executeUpdate() == 1;
         }
     }
 
+    /** Reactivación */
     public boolean activate(int idEmpleado) throws SQLException {
-        String sql = "UPDATE empleados SET estado='Activo', fecha_inactivacion=NULL, fecha_actualizacion=CURRENT_TIMESTAMP WHERE id_empleado=?";
+        String sql = "UPDATE empleados SET " +
+                "estado='Activo', fecha_inactivacion=NULL, fecha_actualizacion=CURRENT_TIMESTAMP " +
+                "WHERE id_empleado=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idEmpleado);
             return stmt.executeUpdate() == 1;
+        }
+    }
+
+    /** Baja física */
+    public boolean remove(int idEmpleado) throws SQLException {
+        String sql = "DELETE FROM empleados WHERE id_empleado = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idEmpleado);
+            return stmt.executeUpdate() == 1;
+        }
+    }
+
+    /** Comprueba si ya existe un empleado con ese documento */
+    public boolean existsByDocumento(String documento) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM empleados WHERE documento = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, documento);
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) > 0;
+            }
         }
     }
 
@@ -113,21 +144,5 @@ public class EmpleadoDAO {
         e.setFechaActualizacion(rs.getTimestamp("fecha_actualizacion"));
         e.setFechaInactivacion(rs.getTimestamp("fecha_inactivacion"));
         return e;
-    }
-
-    /**
-     * Limpia drivers MySQL y AbandonedConnectionCleanupThread.
-     * Llamar en contextDestroyed.
-     */
-    public static void cleanup() {
-        try {
-            com.mysql.cj.jdbc.AbandonedConnectionCleanupThread.checkedShutdown();
-        } catch (Exception ignored) { }
-        Enumeration<Driver> drivers = DriverManager.getDrivers();
-        while (drivers.hasMoreElements()) {
-            try {
-                DriverManager.deregisterDriver(drivers.nextElement());
-            } catch (SQLException ignored) { }
-        }
     }
 }

@@ -1,8 +1,11 @@
+
+
 /* contenedor principal */
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f7fa;
-    margin: 0; padding: 20px;
+    margin: 0;
+    padding: 20px;
 }
 .container {
     max-width: 1200px;
@@ -20,18 +23,20 @@ a.button, button.button {
     color: #fff;
     padding: 8px 16px;
     margin-bottom: 10px;
-    border:none; border-radius:4px;
-    cursor:pointer; text-decoration:none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
     transition: background 0.2s;
 }
 a.button:hover, button.button:hover {
     background: #2980b9;
 }
 button.cancel {
-    background: #95a5a6;
+    background: #e74c3c;
 }
 button.cancel:hover {
-    background: #7f8c8d;
+    background: #c0392b;
 }
 
 /* alertas */
@@ -41,25 +46,72 @@ button.cancel:hover {
     border: 1px solid #d6e9c6;
     background-color: #dff0d8;
     color: #3c763d;
-    border-radius:4px;
+    border-radius: 4px;
 }
 
 /* tabla */
 table {
-    width: 100%; border-collapse: collapse; margin-top:10px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 th, td {
-    padding:12px 8px; text-align:left; border-bottom:1px solid #ddd;
+    padding: 12px 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 th {
-    background: #ecf0f1; color:#2c3e50;
+    background: #ecf0f1;
+    color: #2c3e50;
 }
 tr:hover {
     background: #f1f1f1;
 }
-td.actions a {
-    margin-right:8px; color:#3498db; text-decoration:none;
+
+/* contenedor de acciones */
+.actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
-td.actions a:hover {
-    text-decoration:underline;
+
+/* enlaces dentro de acciones */
+.actions a {
+    color: #3498db;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    font-size: 0.9rem;
+}
+.actions a:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+/* opcional: si usas botones dentro de acciones */
+.actions button {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.actions button:hover {
+    background-color: #c0392b;
+}
+/* Ajuste de contenedor de tabla para evitar desborde */
+.container {
+    overflow-x: auto;
+}
+
+/* Asegurar que la cabecera siga alineada con las filas al hacer scroll */
+table {
+    min-width: 1000px; /* o el ancho que necesites según columnas */
+}
+
+/* .actions ya lo tenemos; si hace falta: */
+.actions {
+    white-space: nowrap;
 }

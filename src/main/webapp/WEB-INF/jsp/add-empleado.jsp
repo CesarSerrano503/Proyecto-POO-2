@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Cesar
-  Date: 27/5/2025
-  Time: 22:23
-  To change this template use File | Settings | File Templates.
---%>
-<!-- src/main/webapp/WEB-INF/jsp/add-empleado.jsp -->
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,49 +7,91 @@
   <title>Nuevo Empleado</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados-form.css" />
-
 </head>
 <body>
 <div class="container">
   <h2>Nuevo Empleado</h2>
+
+  <!-- Errores de validación -->
+  <c:if test="${not empty errors}">
+    <div class="alert">
+      <ul>
+        <c:forEach var="err" items="${errors}">
+          <li>${err}</li>
+        </c:forEach>
+      </ul>
+    </div>
+  </c:if>
+
   <form action="${pageContext.request.contextPath}/empleados" method="post" class="form">
+    <!-- Nombre -->
     <label>Nombre:
-      <input type="text" name="nombre" required maxlength="255"/>
+      <input type="text" name="nombre"
+             value="${empleado.nombre}"
+             required maxlength="255"/>
     </label>
+
+    <!-- Documento -->
     <label>Documento:
-      <input type="text" name="documento" required maxlength="50"/>
+      <input type="text" name="documento"
+             value="${empleado.documento}"
+             required maxlength="50"/>
     </label>
+
+    <!-- Tipo Persona -->
     <label>Tipo Persona:
       <select name="tipoPersona" required>
-        <option value="Natural">Natural</option>
-        <option value="Jurídica">Jurídica</option>
+        <option value="">--Selecciona--</option>
+        <option value="Natural"
+        ${empleado.tipoPersona=='Natural' ? 'selected':''}>Natural</option>
+        <option value="Jurídica"
+        ${empleado.tipoPersona=='Jurídica' ? 'selected':''}>Jurídica</option>
       </select>
     </label>
+
+    <!-- Tipo Contratación -->
     <label>Tipo Contratación:
       <select name="tipoContratacion" required>
-        <option value="Permanente">Permanente</option>
-        <option value="Por Horas">Por Horas</option>
+        <option value="">--Selecciona--</option>
+        <option value="Permanente"
+        ${empleado.tipoContratacion=='Permanente' ? 'selected':''}>Permanente</option>
+        <option value="Por Horas"
+        ${empleado.tipoContratacion=='Por Horas' ? 'selected':''}>Por Horas</option>
       </select>
     </label>
+
+    <!-- Teléfono -->
     <label>Teléfono:
-      <input type="text" name="telefono" maxlength="20"/>
+      <input type="text" name="telefono"
+             value="${empleado.telefono}"
+             maxlength="20"/>
     </label>
+
+    <!-- Correo -->
     <label>Correo:
-      <input type="email" name="correo" maxlength="150"/>
+      <input type="email" name="correo"
+             value="${empleado.correo}"
+             maxlength="150"/>
     </label>
+
+    <!-- Dirección -->
     <label>Dirección:
-      <input type="text" name="direccion" maxlength="255"/>
+      <input type="text" name="direccion"
+             value="${empleado.direccion}"
+             maxlength="255"/>
     </label>
+
+    <!-- Creado Por -->
     <label>Creado Por:
-      <input type="text" name="creadoPor" maxlength="100" required/>
+      <input type="text" name="creadoPor"
+             value="${empleado.creadoPor}"
+             required maxlength="100"/>
     </label>
 
     <div class="form-actions">
       <button type="submit" class="button">Guardar</button>
-      <!-- botón ‘Cancelar’ -->
-      <button type="button"
-              class="button cancel"
-              onclick="window.location='${pageContext.request.contextPath}/empleados';">
+      <button type="button" class="button cancel"
+              onclick="location.href='${pageContext.request.contextPath}/empleados?action=list';">
         Cancelar
       </button>
     </div>
@@ -64,5 +99,3 @@
 </div>
 </body>
 </html>
-
-

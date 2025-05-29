@@ -1,44 +1,88 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Cesar
-  Date: 27/5/2025
-  Time: 22:12
-  To change this template use File | Settings | File Templates.
---%>
-
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Nuevo Cliente</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados-form.css"/>
 </head>
 <body>
-<h2>Registrar Nuevo Cliente</h2>
-<form action="${pageContext.request.contextPath}/clientes/nuevo" method="post">
-    <label>Nombre:<br/>
-        <input type="text" name="nombre" required maxlength="255"/>
-    </label><br/><br/>
-    <label>Documento:<br/>
-        <input type="text" name="documento" required maxlength="50"/>
-    </label><br/><br/>
-    <label>Tipo de Persona:<br/>
-        <select name="tipoPersona">
-            <option value="Natural">Natural</option>
-            <option value="Jurídica">Jurídica</option>
-        </select>
-    </label><br/><br/>
-    <label>Teléfono:<br/>
-        <input type="text" name="telefono" maxlength="20"/>
-    </label><br/><br/>
-    <label>Correo:<br/>
-        <input type="email" name="correo" maxlength="255"/>
-    </label><br/><br/>
-    <label>Dirección:<br/>
-        <textarea name="direccion" rows="3" cols="30"></textarea>
-    </label><br/><br/>
-    <button type="submit">Guardar Cliente</button>
-</form>
-<p><a href="${pageContext.request.contextPath}/clientes">← Volver al listado</a></p>
+<div class="container">
+    <h2>Nuevo Cliente</h2>
+
+    <!-- Errores de validación -->
+    <c:if test="${not empty errors}">
+        <div class="alert">
+            <ul>
+                <c:forEach var="err" items="${errors}">
+                    <li>${err}</li>
+                </c:forEach>
+            </ul>
+        </div>
+    </c:if>
+
+    <form action="${pageContext.request.contextPath}/clientes" method="post" class="form">
+        <!-- Nombre -->
+        <label>Nombre:
+            <input type="text" name="nombre"
+                   value="${cliente.nombre}"
+                   required maxlength="255"/>
+        </label>
+
+        <!-- Documento -->
+        <label>Documento:
+            <input type="text" name="documento"
+                   value="${cliente.documento}"
+                   required maxlength="50"/>
+        </label>
+
+        <!-- Tipo Persona -->
+        <label>Tipo Persona:
+            <select name="tipoPersona" required>
+                <option value="">--Selecciona--</option>
+                <option value="Natural" ${cliente.tipoPersona=='Natural'?'selected':''}>Natural</option>
+                <option value="Jurídica" ${cliente.tipoPersona=='Jurídica'?'selected':''}>Jurídica</option>
+            </select>
+        </label>
+
+        <!-- Teléfono -->
+        <label>Teléfono:
+            <input type="text" name="telefono"
+                   value="${cliente.telefono}"
+                   required maxlength="20"/>
+        </label>
+
+        <!-- Correo -->
+        <label>Correo:
+            <input type="email" name="correo"
+                   value="${cliente.correo}"
+                   required maxlength="150"/>
+        </label>
+
+        <!-- Dirección -->
+        <label>Dirección:
+            <input type="text" name="direccion"
+                   value="${cliente.direccion}"
+                   required maxlength="255"/>
+        </label>
+
+        <!-- Creado Por -->
+        <label>Creado Por:
+            <input type="text" name="creadoPor"
+                   value="${cliente.creadoPor}"
+                   required maxlength="100"/>
+        </label>
+
+        <div class="form-actions">
+            <button type="submit" class="button">Guardar</button>
+            <button type="button" class="button cancel"
+                    onclick="location.href='${pageContext.request.contextPath}/clientes?action=list';">
+                Cancelar
+            </button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

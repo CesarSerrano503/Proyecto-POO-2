@@ -1,7 +1,12 @@
 package com.multigroup.model;
 
+import java.util.Date;
+
+/**
+ * Modelo de datos para el módulo de Clientes, con todos los campos según especificación.
+ */
 public class Cliente {
-    private int id;
+    private int idCliente;
     private String nombre;
     private String documento;
     private String tipoPersona;
@@ -9,24 +14,16 @@ public class Cliente {
     private String correo;
     private String direccion;
     private String estado;
+    private String creadoPor;
+    private Date fechaCreacion;
+    private Date fechaActualizacion;
+    private Date fechaInactivacion;
 
     public Cliente() {}
 
-    public Cliente(int id, String nombre, String documento, String tipoPersona,
-                   String telefono, String correo, String direccion, String estado) {
-        this.id = id;
-        this.nombre = nombre;
-        this.documento = documento;
-        this.tipoPersona = tipoPersona;
-        this.telefono = telefono;
-        this.correo = correo;
-        this.direccion = direccion;
-        this.estado = estado;
-    }
-
-    // getters y setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    // Getters y Setters
+    public int getIdCliente() { return idCliente; }
+    public void setIdCliente(int idCliente) { this.idCliente = idCliente; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -48,4 +45,16 @@ public class Cliente {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
+
+    public String getCreadoPor() { return creadoPor; }
+    public void setCreadoPor(String creadoPor) { this.creadoPor = creadoPor; }
+
+    public Date getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(Date fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+
+    public Date getFechaActualizacion() { return fechaActualizacion; }
+    public void setFechaActualizacion(Date fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
+
+    public Date getFechaInactivacion() { return fechaInactivacion; }
+    public void setFechaInactivacion(Date fechaInactivacion) { this.fechaInactivacion = fechaInactivacion; }
 }
