@@ -12,6 +12,7 @@ Su objetivo es facilitar el flujo de trabajo de un equipo de proyectos ofreciend
 
 ## Alumnos
 - Cesar Antonio Serrano Gutiérrez
+- Sara
 
 ## Herramientas utilizadas
 - **IDE:** IntelliJ IDEA  
