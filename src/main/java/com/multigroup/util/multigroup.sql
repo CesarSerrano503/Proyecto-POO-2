@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 30-05-2025 a las 02:36:50
+-- Tiempo de generación: 30-05-2025 a las 05:57:40
 -- Versión del servidor: 9.1.0
 -- Versión de PHP: 8.3.14
 
@@ -208,7 +208,15 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `fecha_actualizacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `username`, `password`, `rol`, `estado`, `creado_por`, `fecha_creacion`, `fecha_actualizacion`) VALUES
+(5, 'admin', '12345', 'admin', 'Activo', 'sistema', '2025-05-29 22:38:50', '2025-05-29 23:49:29'),
+(6, 'colaborador', '123456', 'usuario', 'Inactivo', 'sistema', '2025-05-29 22:38:50', '2025-05-29 23:49:55');
 
 --
 -- Restricciones para tablas volcadas

@@ -1,6 +1,6 @@
 <%--
   Código hecho por: Cesar Antonio Serrano Gutiérrez
-  Fecha de creación: 27/5/2025
+  Fecha de creación: 27git add ./5/2025
   Modificado para administrador: 29/5/2025
 --%>
 
