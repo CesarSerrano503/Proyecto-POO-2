@@ -45,40 +45,21 @@
                 <td>${c.idCotizacion}</td>
                 <td>${c.clienteNombre}</td>
                 <td>${c.estado}</td>
-                <td>
-                    <fmt:formatNumber value="${c.totalHoras}" type="number" minFractionDigits="2" />
-                </td>
-                <td>
-                    <fmt:formatDate value="${c.fechaInicio}" pattern="yyyy-MM-dd HH:mm" />
-                </td>
-                <td>
-                    <fmt:formatDate value="${c.fechaFin}" pattern="yyyy-MM-dd HH:mm" />
-                </td>
-                <td>
-                    <fmt:formatNumber value="${c.costoAsignaciones}" type="currency" />
-                </td>
-                <td>
-                    <fmt:formatNumber value="${c.costosAdicionales}" type="currency" />
-                </td>
-                <td>
-                    <fmt:formatNumber value="${c.total}" type="currency" />
-                </td>
+                <td><fmt:formatNumber value="${c.totalHoras}" type="number" minFractionDigits="2" /></td>
+                <td><fmt:formatDate value="${c.fechaInicio}" pattern="yyyy-MM-dd HH:mm" /></td>
+                <td><fmt:formatDate value="${c.fechaFin}" pattern="yyyy-MM-dd HH:mm" /></td>
+                <td><fmt:formatNumber value="${c.costoAsignaciones}" type="currency" /></td>
+                <td><fmt:formatNumber value="${c.costosAdicionales}" type="currency" /></td>
+                <td><fmt:formatNumber value="${c.total}" type="currency" /></td>
                 <td>${c.creadoPor}</td>
-                <td>
-                    <fmt:formatDate value="${c.fechaCreacion}" pattern="yyyy-MM-dd HH:mm:ss" />
-                </td>
-                <td>
-                    <fmt:formatDate value="${c.fechaActualizacion}" pattern="yyyy-MM-dd HH:mm:ss" />
-                </td>
-                <td>
-                    <fmt:formatDate value="${c.fechaFinalizacion}" pattern="yyyy-MM-dd HH:mm:ss" />
-                </td>
+                <td><fmt:formatDate value="${c.fechaCreacion}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                <td><fmt:formatDate value="${c.fechaActualizacion}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                <td><fmt:formatDate value="${c.fechaFinalizacion}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                 <td class="actions">
-                    <a href="${pageContext.request.contextPath}/cotizaciones?action=finalize&amp;idCotizacion=${c.idCotizacion}"
-                       onclick="return confirm('¿Finalizar cotización?');">Finalizar</a> |
+                    <a href="${pageContext.request.contextPath}/cotizaciones?action=finalize&amp;idCotizacion=${c.idCotizacion}" onclick="return confirm('¿Finalizar cotización?');">Finalizar</a> |
                     <a href="${pageContext.request.contextPath}/cotizaciones?action=edit&amp;idCotizacion=${c.idCotizacion}">Editar</a> |
-                    <a href="${pageContext.request.contextPath}/cotizaciones?action=remove&amp;idCotizacion=${c.idCotizacion}"
-                       onclick="return confirm('¿Eliminar permanentemente?');">Eliminar</a>
+                    <a href="${pageContext.request.contextPath}/cotizaciones?action=remove&amp;idCotizacion=${c.idCotizacion}" onclick="return confirm('¿Eliminar permanentemente?');">Eliminar</a> |
+                    <a href="${pageContext.request.contextPath}/asignaciones?action=list&amp;idCotizacion=${c.idCotizacion}">Ver Asignaciones</a>
                 </td>
             </tr>
         </c:forEach>

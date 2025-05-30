@@ -14,7 +14,6 @@ public class AsignacionDAO {
         this.conn = conn;
     }
 
-    /** Lista todas las asignaciones de una cotización */
     public List<Asignacion> findByCotizacion(int idCot) throws SQLException {
         String sql = "SELECT * FROM asignaciones WHERE id_cotizacion = ?";
         List<Asignacion> lista = new ArrayList<>();
@@ -29,7 +28,19 @@ public class AsignacionDAO {
         return lista;
     }
 
-    /** Inserta una nueva asignación */
+    public Asignacion findById(int idAsig) throws SQLException {
+        String sql = "SELECT * FROM asignaciones WHERE id_asignacion = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idAsig);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
+                return null;
+            }
+        }
+    }
+
     public boolean insert(Asignacion a) throws SQLException {
         String sql = "INSERT INTO asignaciones(" +
                 "id_cotizacion, id_empleado, area, costo_hora, fecha_inicio, fecha_fin, horas_estimadas, " +
@@ -61,7 +72,6 @@ public class AsignacionDAO {
         }
     }
 
-    /** Actualiza una asignación existente */
     public boolean update(Asignacion a) throws SQLException {
         String sql = "UPDATE asignaciones SET " +
                 "id_empleado=?, area=?, costo_hora=?, fecha_inicio=?, fecha_fin=?, " +
@@ -84,7 +94,6 @@ public class AsignacionDAO {
         }
     }
 
-    /** Elimina una asignación */
     public boolean remove(int idAsig) throws SQLException {
         String sql = "DELETE FROM asignaciones WHERE id_asignacion = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
