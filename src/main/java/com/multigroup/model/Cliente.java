@@ -1,3 +1,7 @@
+/**
+ * Código hecho por: Cesar Antonio Serrano Gutiérrez
+ * Fecha de creación: 27/5/2025
+ */
 package com.multigroup.model;
 
 import java.util.Date;
