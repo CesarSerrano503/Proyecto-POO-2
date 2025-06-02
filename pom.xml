@@ -19,6 +19,9 @@
     <maven.compiler.target>17</maven.compiler.target>
     <!-- Para permitir JSP sin web.xml -->
     <failOnMissingWebXml>false</failOnMissingWebXml>
+
+    <!-- Versión de JasperReports Library -->
+    <jasperreports.version>6.20.0</jasperreports.version>
   </properties>
 
   <dependencies>
@@ -45,11 +48,17 @@
 
     <!-- Conector MySQL -->
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.33</version>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>9.3.0</version>
     </dependency>
 
+    <!-- JasperReports Library -->
+    <dependency>
+      <groupId>net.sf.jasperreports</groupId>
+      <artifactId>jasperreports</artifactId>
+      <version>${jasperreports.version}</version>
+    </dependency>
 
     <!-- BCrypt para hashing de contraseñas -->
     <dependency>
@@ -68,7 +77,9 @@
   </dependencies>
 
   <build>
+    <!-- Nombre final del WAR -->
     <finalName>multigroup-webapp</finalName>
+
     <pluginManagement>
       <plugins>
         <plugin>
@@ -97,5 +108,77 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <!-- 1) Plugin para compilar código Java (incluye nuestra clase ReportCompiler) -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+
+      <!-- 2) Plugin TOMCAT/EQUIVALENTE si lo necesitas (opcional) -->
+      <!-- Ejemplo de Tomcat7 plugin, sólo si deseas hacer mvn tomcat7:run -->
+      <!--
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <path>/</path>
+          <port>8080</port>
+        </configuration>
+      </plugin>
+      -->
+
+      <!-- 3) Plugin exec-maven-plugin: invoca a ReportCompiler en generate-resources -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>compile-jrxml</id>
+            <!-- Se ejecuta después de compilar clases, en process-classes -->
+            <phase>process-classes</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <!-- Clase que compila todos los .jrxml -->
+              <mainClass>com.multigroup.utils.ReportCompiler</mainClass>
+              <!-- Usamos compile porque queremos que tome target/classes + dependencias -->
+              <classpathScope>compile</classpathScope>
+            </configuration>
+          </execution>
+
+        </executions>
+      </plugin>
+
+      <!-- 4) Plugin WAR para empaquetar el proyecto -->
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <!-- 5) Copiar los .jasper generados a WEB-INF/reports/ -->
+    <resources>
+      <resource>
+        <!-- Los .jasper se generan en target/classes/reports/ -->
+        <directory>${project.build.outputDirectory}/reports</directory>
+        <includes>
+          <include>**/*.jasper</include>
+        </includes>
+        <!-- Dentro del WAR, irán a WEB-INF/reports/ -->
+        <targetPath>WEB-INF/reports</targetPath>
+      </resource>
+    </resources>
   </build>
 </project>

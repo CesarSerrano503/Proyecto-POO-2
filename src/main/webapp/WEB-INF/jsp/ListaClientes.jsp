@@ -13,15 +13,15 @@
     <title>Lista de Clientes</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados-list.css"/>
-    <!-- Asegúrate de tener en empleados-list.css:
-         .actions { display: flex; gap: 10px; align-items: center; }
-         .actions a { margin: 0; }
-    -->
+
 </head>
 <body>
 <div class="container">
     <h2>Lista de Clientes</h2>
-    <a href="${pageContext.request.contextPath}/" class="button cancel">Volver al Inicio</a>
+    <a href="${pageContext.request.contextPath}/home" class="button cancel">
+        Volver al inicio
+    </a>
+
 
     <c:if test="${not empty sessionScope.mensaje}">
         <div class="alert">${sessionScope.mensaje}</div>

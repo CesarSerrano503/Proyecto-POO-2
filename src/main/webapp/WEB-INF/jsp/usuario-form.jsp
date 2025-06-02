@@ -1,68 +1,102 @@
-<%--
-  Código hecho por: Cesar Antonio Serrano Gutiérrez
-  Fecha de creación: 29/5/2025
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <title><c:choose>
-    <c:when test="${not empty usuario}">Editar Usuario</c:when>
-    <c:otherwise>Nuevo Usuario</c:otherwise>
-  </c:choose></title>
-  <style>
-    form { width: 300px; margin: auto; }
-    label { display: block; margin-top: 1rem; }
-    input, select { width: 100%; padding: 0.4rem; margin-top: 0.2rem; }
-    button { margin-top: 1rem; padding: 0.5rem 1rem; }
-    .center { text-align: center; margin-top: 1rem; }
-  </style>
+  <title>
+    <c:choose>
+      <c:when test="${not empty usuarioObj}">Editar Usuario</c:when>
+      <c:otherwise>Nuevo Usuario</c:otherwise>
+    </c:choose>
+  </title>
+
+  <!-- CSS global (contenedor, alertas, botones generales) -->
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
+  <!-- CSS específico para formulario de usuario (usuario-form.css) -->
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/usuario-form.css"/>
 </head>
 <body>
-<h2 class="center">
-  <c:choose>
-    <c:when test="${not empty usuario}">Editar Usuario</c:when>
-    <c:otherwise>Nuevo Usuario</c:otherwise>
-  </c:choose>
-</h2>
-<form action="${pageContext.request.contextPath}/usuarios" method="post">
-  <c:if test="${not empty usuario}">
-    <input type="hidden" name="action" value="update"/>
-    <input type="hidden" name="id" value="${usuario.idUsuario}"/>
+<div class="container">
+  <h2>
+    <c:choose>
+      <c:when test="${not empty usuarioObj}">Editar Usuario</c:when>
+      <c:otherwise>Nuevo Usuario</c:otherwise>
+    </c:choose>
+  </h2>
+
+  <!-- Mostrar mensaje de validación si existe -->
+  <c:if test="${not empty error}">
+    <div class="alert">
+      <ul>
+        <li>${error}</li>
+      </ul>
+    </div>
   </c:if>
-  <c:if test="${empty usuario}">
-    <input type="hidden" name="action" value="insert"/>
-  </c:if>
 
-  <label for="username">Usuario:</label>
-  <input id="username" type="text" name="username"
-         value="${usuario.username}" required/>
+  <form class="form" action="${pageContext.request.contextPath}/usuarios?action=save" method="post">
+    <!-- Campo oculto con ID solo en edición -->
+    <c:if test="${not empty usuarioObj}">
+      <input type="hidden" name="id" value="${usuarioObj.idUsuario}" />
+    </c:if>
 
-  <label for="password">Contraseña:</label>
-  <input id="password" type="text" name="password"
-         value="${usuario.password}" required/>
+    <!-- Campo Usuario -->
+    <label>
+      <span>Usuario:</span>
+      <input type="text"
+             name="username"
+             required
+             minlength="4"
+             value="${usuarioObj.username}" />
+    </label>
 
-  <label for="rol">Rol:</label>
-  <select id="rol" name="rol" required>
-    <option value="">-- Seleccione --</option>
-    <option value="admin"      ${usuario.rol=='admin' ? 'selected' : ''}>Administrador</option>
-    <option value="colaborador"${usuario.rol=='colaborador' ? 'selected' : ''}>Colaborador</option>
-  </select>
+    <!-- Campo Contraseña -->
+    <label>
+      <span>Contraseña:</span>
+      <input type="password"
+             name="password"
+             <c:if test="${empty usuarioObj}">required minlength="6"</c:if> />
+      <c:if test="${not empty usuarioObj}">
+        <small>(Déjalo en blanco para conservar la actual)</small>
+      </c:if>
+    </label>
 
-  <label for="estado">Estado:</label>
-  <select id="estado" name="estado" required>
-    <option value="">-- Seleccione --</option>
-    <option value="activo"   ${usuario.estado=='activo' ? 'selected' : ''}>Activo</option>
-    <option value="inactivo" ${usuario.estado=='inactivo' ? 'selected' : ''}>Inactivo</option>
-  </select>
+    <!-- Campo Rol -->
+    <label>
+      <span>Rol:</span>
+      <select name="rol" required>
+        <option value="usuario" <c:if test="${usuarioObj.rol == 'usuario'}">selected</c:if>>
+          Colaborador
+        </option>
+        <option value="admin" <c:if test="${usuarioObj.rol == 'admin'}">selected</c:if>>
+          Administrador
+        </option>
+      </select>
+    </label>
 
-  <div class="center">
-    <button type="submit">Guardar</button>
-    &nbsp;
-    <a href="${pageContext.request.contextPath}/usuarios">Cancelar</a>
+    <!-- Campo Estado (checkbox) -->
+    <div class="checkbox-group">
+      <input type="checkbox"
+             name="estado"
+             id="estado"
+             <c:if test="${usuarioObj.estado}">checked</c:if> />
+      <label for="estado">Activo</label>
+    </div>
+
+    <!-- Botones Guardar y Cancelar -->
+    <div class="form-actions">
+      <button type="submit" class="save">Guardar</button>
+      <button type="button" class="cancel"
+              onclick="window.location='${pageContext.request.contextPath}/usuarios?action=list';">
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+  <!-- Enlace para volver al inicio -->
+  <div class="back-link mt-20">
+    <a href="${pageContext.request.contextPath}/home">Volver al inicio</a>
   </div>
-</form>
+</div>
 </body>
 </html>

@@ -1,62 +1,87 @@
-<%--
-  Código hecho por: Cesar Antonio Serrano Gutiérrez
-  Fecha de creación: 29/5/2025
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8"/>
-    <title>Lista de Usuarios</title>
-    <style>
-        table { width: 80%; margin: auto; border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
-        th { background: #f0f0f0; }
-        a.button { padding: 0.3rem 0.6rem; background: #28a745; color: white; text-decoration: none; border-radius: 4px; }
-        a.button.delete { background: #dc3545; }
-        .center { text-align: center; margin: 1rem; }
-    </style>
+    <title>Listado de Usuarios</title>
+    <!-- Usamos el CSS de empleados para el estilo de tabla y botones -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/empleados.css"/>
 </head>
 <body>
-<h2 class="center">Gestión de Usuarios</h2>
-<div class="center">
-    <a href="${pageContext.request.contextPath}/usuarios?action=nuevo" class="button">Nuevo Usuario</a>
-    &nbsp;&nbsp;
-    <a href="${pageContext.request.contextPath}/admin-index.jsp">Volver al Panel</a>
-</div>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Usuario</th>
-        <th>Rol</th>
-        <th>Estado</th>
-        <th>Creado Por</th>
-        <th>Fecha Creación</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="u" items="${usuarios}">
+<div class="container">
+    <!-- Título de la sección -->
+    <h1>Gestión de Usuarios</h1>
+
+    <!-- Mensaje de éxito: si el servlet puso atributo “success”, lo mostramos -->
+    <c:if test="${not empty success}">
+        <div class="alert">
+                ${success}
+        </div>
+    </c:if>
+    <!-- Mensaje de error: si el servlet puso atributo “error”, lo mostramos con estilo rojo -->
+    <c:if test="${not empty error}">
+        <div class="alert" style="background-color: #f2dede; color: #a94442; border-color: #ebcccc;">
+                ${error}
+        </div>
+    </c:if>
+
+    <!-- Botones de navegación: volver al inicio o crear nuevo usuario -->
+    <div style="margin-bottom: 15px;">
+        <!-- Enlace para regresar al home -->
+        <a href="${pageContext.request.contextPath}/home" class="button">Volver al inicio</a>
+        <!-- Enlace para abrir el formulario de creación -->
+        <a href="${pageContext.request.contextPath}/usuarios?action=form" class="button">Nuevo Usuario</a>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <table>
+        <thead>
         <tr>
-            <td>${u.idUsuario}</td>
-            <td>${u.username}</td>
-            <td>${u.rol}</td>
-            <td>${u.estado}</td>
-            <td>${u.creadoPor}</td>
-            <td>${u.fechaCreacion}</td>
-            <td>
-                <a href="${pageContext.request.contextPath}/usuarios?action=edit&id=${u.idUsuario}" class="button">Editar</a>
-                <a href="${pageContext.request.contextPath}/usuarios?action=delete&id=${u.idUsuario}"
-                   class="button delete"
-                   onclick="return confirm('¿Seguro que desea inactivar este usuario?');">
-                    Inactivar
-                </a>
-            </td>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Activo</th>
+            <th>Creado Por</th>
+            <th>Fecha Creación</th>
+            <th>Acciones</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <!-- Recorremos la lista “usuarios” enviada desde el servlet -->
+        <c:forEach var="u" items="${usuarios}">
+            <tr>
+                <!-- Mostrar cada campo del objeto Usuario -->
+                <td>${u.idUsuario}</td>
+                <td>${u.username}</td>
+                <td>${u.rol}</td>
+                <td>
+                    <!-- Convertimos el booleano a “Sí” o “No” -->
+                    <c:out value="${u.estado ? 'Sí' : 'No'}"/>
+                </td>
+                <td>${u.creadoPor}</td>
+                <td>
+                    <!-- Formateamos LocalDateTime a “yyyy-MM-dd HH:mm” -->
+                    <c:out value="${u.fechaCreacion.toString().substring(0,16).replace('T',' ')}"/>
+                </td>
+                <td>
+                    <!-- Contenedor de acciones: Editar y Eliminar -->
+                    <div class="actions">
+                        <!-- Enlace para editar, pasando el ID en la URL -->
+                        <a href="${pageContext.request.contextPath}/usuarios?action=form&amp;id=${u.idUsuario}">
+                            Editar
+                        </a>
+                        <!-- Enlace para eliminar: confirmación JavaScript antes de ejecutar -->
+                        <a href="${pageContext.request.contextPath}/usuarios?action=delete&amp;id=${u.idUsuario}"
+                           onclick="return confirm('¿Eliminar usuario ${u.username}?');">
+                            Eliminar
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

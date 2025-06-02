@@ -17,7 +17,9 @@
 <body>
 <div class="container">
   <h2>Lista de Empleados</h2>
-  <a href="${pageContext.request.contextPath}/" class="button cancel">Volver al Inicio</a>
+  <a href="${pageContext.request.contextPath}/home" class="button cancel">
+    Volver al inicio
+  </a>
 
   <c:if test="${not empty sessionScope.mensaje}">
     <div class="alert">${sessionScope.mensaje}</div>
